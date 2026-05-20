@@ -287,7 +287,7 @@ const Nav = () => {
                className="hidden sm:inline-flex font-body font-medium text-[13px] text-white border border-[var(--border-strong)] bg-[var(--surface)]/60 hover:border-[var(--blue-soft)] px-3.5 py-2 rounded-lg transition">
               See Founder Offer
             </a>
-            <a href="#cta"
+            <a href="https://api.leadconnectorhq.com/widget/bookings/jobflowsos-15-minute-demo" target="_blank" rel="noopener noreferrer"
                className="inline-flex items-center gap-1.5 font-body font-medium text-[13px] text-white bg-[var(--blue)] hover:bg-[var(--blue-hover)] px-3.5 py-2 rounded-lg transition">
               Book a Demo <ArrowRight className="w-3.5 h-3.5" />
             </a>
@@ -524,7 +524,7 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3 mt-9">
-            <a href="#cta"
+            <a href="https://api.leadconnectorhq.com/widget/bookings/jobflowsos-15-minute-demo" target="_blank" rel="noopener noreferrer"
                className="group inline-flex items-center gap-2 font-body font-medium text-[14px] text-white bg-[var(--blue)] hover:bg-[var(--blue-hover)] px-5 py-3.5 rounded-lg transition-all hover:shadow-[0_0_30px_-5px_var(--blue-glow-2)]">
               Book a Demo
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" />
@@ -1031,7 +1031,7 @@ const AfterBooking = () => {
         </div>
 
         <div className="mt-8 flex justify-center">
-          <a href="#cta"
+          <a href="https://api.leadconnectorhq.com/widget/bookings/jobflowsos-15-minute-demo" target="_blank" rel="noopener noreferrer"
              className="group inline-flex items-center gap-2 font-body font-medium text-[14px] text-white bg-[var(--blue)] hover:bg-[var(--blue-hover)] px-5 py-3.5 rounded-lg transition-all hover:shadow-[0_0_30px_-5px_var(--blue-glow-2)]">
             Book a Demo
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" />
@@ -1726,7 +1726,7 @@ const WhoThisIsFor = () => (
           </ul>
 
           <div className="mt-9 flex flex-wrap items-center gap-3">
-            <a href="#cta"
+            <a href="https://api.leadconnectorhq.com/widget/bookings/jobflowsos-15-minute-demo" target="_blank" rel="noopener noreferrer"
                className="group inline-flex items-center gap-2 font-body font-medium text-[14px] text-white bg-[var(--blue)] hover:bg-[var(--blue-hover)] px-5 py-3.5 rounded-lg transition-all hover:shadow-[0_8px_30px_-5px_rgba(37,99,235,0.5)]">
               Book a Demo
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" />
@@ -1819,7 +1819,7 @@ const Pricing = () => {
                 ))}
               </div>
 
-              <a href="#cta"
+              <a href="https://api.leadconnectorhq.com/widget/bookings/jobflowsos-15-minute-demo" target="_blank" rel="noopener noreferrer"
                  className="group mt-8 inline-flex items-center gap-2 font-body font-medium text-[14px] text-white bg-[var(--blue)] hover:bg-[var(--blue-hover)] px-5 py-3.5 rounded-lg transition-all hover:shadow-[0_0_30px_-5px_var(--blue-glow-2)]">
                 Book a Demo
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" />
@@ -1843,7 +1843,7 @@ const Pricing = () => {
                 A 15-minute demo walks you through the system and how it would
                 configure around your specific business.
               </p>
-              <a href="#cta"
+              <a href="https://api.leadconnectorhq.com/widget/bookings/jobflowsos-15-minute-demo" target="_blank" rel="noopener noreferrer"
                  className="mt-4 inline-flex items-center gap-1.5 font-body text-[13px] text-[var(--blue-soft)] hover:text-[var(--blue-hover)] transition">
                 Book a Demo <ChevronRight className="w-4 h-4" />
               </a>
@@ -1880,7 +1880,7 @@ const FinalCTA = () => (
       </p>
 
       <div className="flex flex-wrap items-center justify-center gap-3 mt-9">
-        <a href="#pricing"
+        <a href="https://api.leadconnectorhq.com/widget/bookings/jobflowsos-15-minute-demo" target="_blank" rel="noopener noreferrer"
            className="group inline-flex items-center gap-2 font-body font-medium text-[15px] text-white bg-[var(--blue)] hover:bg-[var(--blue-hover)] px-6 py-4 rounded-lg transition-all hover:shadow-[0_0_40px_-5px_var(--blue-glow-2)]">
           Book a Demo
           <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" />
@@ -1941,7 +1941,7 @@ const Footer = () => (
           <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--text-4)]">Offer</div>
           <ul className="mt-4 space-y-2.5">
             <li><a href="#pricing" className="font-body text-[13px] text-[var(--text-3)] hover:text-white transition">Founder Offer</a></li>
-            <li><a href="#cta"     className="font-body text-[13px] text-[var(--text-3)] hover:text-white transition">Book a Demo</a></li>
+            <li><a href="https://api.leadconnectorhq.com/widget/bookings/jobflowsos-15-minute-demo" target="_blank" rel="noopener noreferrer"     className="font-body text-[13px] text-[var(--text-3)] hover:text-white transition">Book a Demo</a></li>
             <li><a href="#cta"     className="font-body text-[13px] text-[var(--text-3)] hover:text-white transition">Contact</a></li>
           </ul>
         </div>
