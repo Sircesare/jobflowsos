@@ -683,7 +683,7 @@ const BuiltForRealOperators = () => (
 
         {/* Photo — tighter aspect on desktop */}
         <div className="relative">
-          <div className="relative aspect-[4/5] lg:aspect-[3/4] rounded-2xl overflow-hidden border border-[var(--border-strong)] glow-card">
+          <div className="relative aspect-[4/3] lg:aspect-[16/10] rounded-2xl overflow-hidden border border-[var(--border-strong)] glow-card">
             <img
               src={PHOTO_OPERATOR_PHONE}
               alt="Local service business owner on phone"
@@ -1669,7 +1669,7 @@ const WhoThisIsFor = () => (
     <div className="relative container-tight">
       <div className="grid lg:grid-cols-[1fr,1.1fr] gap-10 lg:gap-14 items-center">
         <div className="relative">
-          <div className="relative aspect-[4/5] lg:aspect-[3/4] rounded-2xl overflow-hidden border border-[var(--border-light)] glow-card-light">
+          <div className="relative aspect-[4/3] lg:aspect-[16/10] rounded-2xl overflow-hidden border border-[var(--border-light)] glow-card-light">
             <img
               src={PHOTO_TABLET_OPERATOR}
               alt="Local service business owner reviewing pipeline on phone"
