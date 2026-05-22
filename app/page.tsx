@@ -1962,6 +1962,19 @@ const Footer = () => (
         </div>
       </div>
     </div>
+      <div className="mt-12 pt-6 border-t border-white/10">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[11px] text-[var(--text-4)]">
+          <span>&copy; 2026 EquityBridge Holdings LLC</span>
+          <span>&middot;</span>
+          <span>dba JobflowsOS</span>
+          <span>&middot;</span>
+          <span>9229 Key West St, Temple City, CA 91780</span>
+          <span>&middot;</span>
+          <a href="tel:+16265900148" className="hover:text-white transition">(626) 590-0148</a>
+          <span>&middot;</span>
+          <a href="mailto:cesar@jobflowsos.com" className="hover:text-white transition">cesar@jobflowsos.com</a>
+        </div>
+      </div>
   </footer>
 );
 
