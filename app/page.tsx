@@ -1786,10 +1786,10 @@ const Pricing = () => {
                         borderColor: "var(--gold)",
                         color: "var(--gold-bright)"
                       }}>
-                  Founding install
+  Memorial Day Sale
                 </span>
                 <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--text-4)]">
-                  Limited · first 5 businesses
+                  Ends May 29, 2026
                 </span>
               </div>
               <div className="font-display font-semibold text-[26px] text-white tracking-tight mt-2">
@@ -1799,15 +1799,78 @@ const Pricing = () => {
                 The full operational stack installed and live in your business within 7 days.
               </p>
 
-              <div className="flex items-baseline gap-3 mt-6">
-                <span className="font-metric font-bold text-[80px] lg:text-[88px] text-white leading-none tracking-tight">$800</span>
-                <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--text-3)]">
-                  one-time install
-                </span>
+              <div className="grid sm:grid-cols-[1.4fr_1fr] gap-3 mt-6">
+                {/* Memorial Day Card */}
+                <div className="relative p-5 rounded-xl border-2 overflow-hidden"
+                     style={{
+                       borderColor: "var(--gold)",
+                       background: "linear-gradient(135deg, rgba(214,168,79,0.10) 0%, rgba(214,168,79,0.02) 100%)"
+                     }}>
+                  <div className="absolute top-0 left-0 right-0 h-[2px]"
+                       style={{ background: "linear-gradient(90deg, transparent, var(--gold-bright), transparent)" }} />
+                  <div className="font-mono text-[9px] uppercase tracking-[0.22em] mb-3"
+                       style={{ color: "var(--gold-bright)" }}>
+                    Memorial Day · Active
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-metric font-bold text-[56px] lg:text-[64px] text-white leading-none tracking-tight">$1,800</span>
+                  </div>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-3)] mt-1.5">
+                    one-time install
+                  </div>
+                  <div className="flex items-baseline gap-2 mt-4 pt-4 border-t border-dashed"
+                       style={{ borderColor: "rgba(214,168,79,0.25)" }}>
+                    <span className="font-metric font-bold text-[28px] lg:text-[32px] text-white leading-none tracking-tight">
+                      + $400<span className="text-[16px] text-[var(--text-3)] font-medium">/mo</span>
+                    </span>
+                  </div>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-3)] mt-1.5">
+                    infrastructure & support
+                  </div>
+                  <div className="mt-4 inline-block px-2 py-1 rounded font-mono text-[9px] uppercase tracking-[0.18em]"
+                       style={{
+                         background: "rgba(214,168,79,0.15)",
+                         color: "var(--gold-bright)"
+                       }}>
+                    ● Locked through May 29
+                  </div>
+                </div>
+
+                {/* Regular Pricing Card */}
+                <div className="relative p-5 rounded-xl border opacity-75"
+                     style={{
+                       borderColor: "var(--border)",
+                       background: "rgba(255,255,255,0.015)"
+                     }}>
+                  <div className="font-mono text-[9px] uppercase tracking-[0.22em] mb-3 text-[var(--text-4)]">
+                    Returns May 30
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-metric font-bold text-[40px] lg:text-[44px] leading-none tracking-tight line-through"
+                          style={{ color: "var(--text-4)", textDecorationColor: "rgba(255,90,90,0.7)" }}>
+                      $2,400
+                    </span>
+                  </div>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-4)] mt-1.5">
+                    one-time install
+                  </div>
+                  <div className="flex items-baseline gap-2 mt-4 pt-4 border-t border-dashed border-[var(--border)]">
+                    <span className="font-metric font-bold text-[22px] lg:text-[24px] leading-none tracking-tight line-through"
+                          style={{ color: "var(--text-4)", textDecorationColor: "rgba(255,90,90,0.7)" }}>
+                      + $675<span className="text-[14px] font-medium">/mo</span>
+                    </span>
+                  </div>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-4)] mt-1.5">
+                    infrastructure & support
+                  </div>
+                  <div className="mt-4 font-body text-[11px] text-[var(--text-4)] leading-relaxed italic">
+                    What you come back to on May 30 if you don't lock in now.
+                  </div>
+                </div>
               </div>
-              <div className="font-body text-[13px] text-[var(--text-3)] mt-2 space-y-1">
-                <div>Founding install pricing available for the first 5 businesses.</div>
-                <div>Optional monthly support available after launch.</div>
+
+              <div className="font-body text-[13px] text-[var(--text-3)] mt-5">
+                One recovered install opportunity can pay for the entire system.
               </div>
 
               <div className="grid sm:grid-cols-2 gap-x-6 gap-y-2.5 mt-7">
@@ -1829,11 +1892,12 @@ const Pricing = () => {
 
           <div className="space-y-4">
             <div className="p-6 rounded-2xl border border-[var(--border-strong)] bg-[var(--surface)]/60">
-              <div className="font-mono text-[10px] lg:text-[12px] uppercase tracking-[0.22em] text-[var(--blue-soft)]">After install</div>
-              <div className="font-display font-medium text-[18px] lg:text-[20px] text-white tracking-tight mt-2">Support & operations</div>
+              <div className="font-mono text-[10px] lg:text-[12px] uppercase tracking-[0.22em] text-[var(--blue-soft)]">$400/month covers</div>
+              <div className="font-display font-medium text-[18px] lg:text-[20px] text-white tracking-tight mt-2">Infrastructure & support</div>
               <p className="font-body text-[13px] text-[var(--text-3)] mt-2 leading-relaxed">
-                Optional monthly support for ongoing tuning, new automation builds, and
-                operational help. Quoted per business after install.
+                System access, workflow maintenance, SMS infrastructure, AI follow-up support,
+                ongoing updates, and operational monitoring. Not a software subscription — it's
+                the team and infrastructure keeping the system running.
               </p>
             </div>
             <div className="p-6 rounded-2xl border border-[var(--border)] bg-[var(--surface)]/60">
