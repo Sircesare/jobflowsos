@@ -4,7 +4,11 @@ import { useState, useEffect } from "react";
 export const useCounter = (target: number, inView: boolean, duration = 1600) => {
   const [val, setVal] = useState(0);
   useEffect(() => {
-    if (!inView) return;
+    // When the element leaves view, reset to 0 so it re-counts on next entry
+    if (!inView) {
+      setVal(0);
+      return;
+    }
     const start = performance.now();
     let raf: number;
     const tick = (t: number) => {

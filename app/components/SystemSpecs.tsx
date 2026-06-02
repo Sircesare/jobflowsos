@@ -5,7 +5,8 @@ import { useCounter } from "../lib/useCounter";
 
 const Spec = ({ value, suffix, label, sub, animate = true, target }: any) => {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
+  // once:false => re-fires every time the card scrolls into view
+  const inView = useInView(ref, { once: false, margin: "-80px" });
   const v = useCounter(animate ? (target ?? 0) : 0, inView);
   const display = animate ? Math.round(v).toLocaleString() : value;
 
