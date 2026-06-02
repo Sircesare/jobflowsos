@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
         source: "/demo",
         destination: "/demo/index.html",
       },
+      {
+        source: "/calculator",
+        destination: "/calculator/index.html",
+      },
     ];
   },
 };

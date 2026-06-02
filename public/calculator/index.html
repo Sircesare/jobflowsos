@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Are Missed Calls Costing You? — JobflowsOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Inter:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07090F; --bg2:#0B1020; --panel:#111827; --elevated:#1A2333;
+    --line:#1f2937; --line-strong:#2a3447;
+    --ink:#F8FAFC; --ink2:#CBD5E1; --mute:#94A3B8; --faint:#64748B;
+    --gold:#D6A84F; --gold-bright:#F5C542; --gold-soft:#E9C46A;
+    --blue:#2563EB; --blue-hover:#3B82F6; --blue-soft:#60A5FA;
+    --red:#EF4444; --green:#10B981;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(ellipse 80% 50% at 50% 0%, rgba(37,99,235,.08), transparent 60%),
+      linear-gradient(180deg, var(--bg), var(--bg2) 40%, var(--bg));
+    color:var(--ink);font-family:'Inter',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;
+    min-height:100vh;padding:50px 0;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+  .kicker{font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.28em;color:var(--faint);text-transform:uppercase;margin-bottom:16px}
+  h1{font-family:'Geist',sans-serif;font-size:clamp(30px,5vw,48px);font-weight:600;letter-spacing:-.02em;line-height:1.06}
+  h1 .hl{color:var(--gold-soft)}
+  .sub{color:var(--ink2);font-size:17px;margin-top:16px;max-width:560px}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px;margin-top:32px}
+  .card.glow{box-shadow:0 0 0 1px var(--border),0 20px 60px -30px rgba(37,99,235,.25)}
+
+  .inputs{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:560px){.inputs{grid-template-columns:1fr}}
+  .field label{display:block;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+  .inputbox{display:flex;align-items:center;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:0 14px}
+  .inputbox:focus-within{border-color:var(--blue)}
+  .inputbox .pre{color:var(--faint);font-size:18px;font-family:'Inter',sans-serif;font-weight:700}
+  .inputbox input{flex:1;background:transparent;border:none;outline:none;color:var(--ink);
+    font-family:'Inter',sans-serif;font-size:26px;font-weight:700;padding:13px 8px;width:100%}
+  .inputbox input::-webkit-outer-spin-button,.inputbox input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .inputbox input[type=number]{-moz-appearance:textfield}
+  .hint{font-size:12px;color:var(--faint);margin-top:6px}
+
+  .assumptions{margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+  .assumptions .arow{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}
+  .arow .albl{font-size:13.5px;color:var(--ink2)}
+  .arow .albl b{color:var(--ink);font-weight:600}
+  .arow input[type=range]{flex:1;max-width:200px;accent-color:var(--blue)}
+  .arow .aval{font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:var(--blue-soft);min-width:48px;text-align:right}
+  .atoggle{background:transparent;border:1px solid var(--line);color:var(--mute);font-family:'Geist Mono',monospace;
+    font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:8px 13px;border-radius:8px;cursor:pointer;transition:.16s;margin-top:4px}
+  .atoggle:hover{border-color:var(--mute);color:var(--ink)}
+  .acollapse{max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .acollapse.open{max-height:300px}
+
+  /* result */
+  .result{margin-top:24px;background:linear-gradient(135deg,#0F1620,#0B1020);border:1px solid var(--line-strong);
+    border-radius:16px;padding:28px;text-align:center;box-shadow:0 0 0 1px rgba(214,168,79,.18),0 0 50px -16px rgba(245,197,66,.25)}
+  .result .rlbl{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:10px}
+  .bignum{font-family:'Inter',sans-serif;font-size:clamp(48px,9vw,76px);font-weight:800;line-height:1;color:var(--gold);letter-spacing:-.01em}
+  .bignum .per{font-size:.34em;color:var(--mute);font-weight:500;letter-spacing:.02em}
+  .ryear{font-size:15px;color:var(--ink2);margin-top:10px}
+  .ryear b{color:var(--gold-soft);font-family:'Inter',sans-serif;font-size:20px;font-weight:700}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);
+    border-radius:12px;overflow:hidden;margin-top:22px}
+  @media(max-width:480px){.compare{grid-template-columns:1fr}}
+  .cbox{background:var(--panel);padding:18px}
+  .cbox .clbl{font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+  .cbox .cval{font-family:'Inter',sans-serif;font-size:30px;font-weight:700}
+  .cbox.loss .cval{color:var(--red)}
+  .cbox.cost .cval{color:var(--blue-soft)}
+  .cbox .csub{font-size:12px;color:var(--mute);margin-top:3px}
+
+  .payback{margin-top:20px;background:var(--elevated);border:1px solid var(--line);border-radius:12px;padding:16px 20px;text-align:center}
+  .payback .pt{font-size:15px;color:var(--ink2)}
+  .payback .pt b{color:var(--green);font-family:'Inter',sans-serif;font-size:22px;font-weight:700}
+
+  .cta{display:inline-flex;align-items:center;gap:10px;margin-top:22px;background:var(--blue);color:#fff;
+    font-weight:500;font-size:15px;padding:14px 28px;border-radius:10px;text-decoration:none;transition:.18s}
+  .cta:hover{background:var(--blue-hover);box-shadow:0 0 30px -5px rgba(96,165,250,.45)}
+
+  .sources{margin-top:30px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--faint);line-height:1.6}
+  .sources b{color:var(--mute)}
+  .fine{font-family:'Geist Mono',monospace;font-size:10px;color:var(--faint);margin-top:24px;letter-spacing:.2em;text-transform:uppercase;text-align:center}
+  a.back{display:inline-block;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-soft);text-decoration:none;margin-bottom:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/demo">← Back to the demo</a>
+  <div class="kicker">JobflowsOS · Revenue Calculator</div>
+  <h1>What are missed calls <span class="hl">actually costing you?</span></h1>
+  <p class="sub">Put in your real numbers. The math below is deliberately conservative — built on published home-services research, erring low so it holds up to scrutiny.</p>
+
+  <div class="card glow">
+    <div class="inputs">
+      <div class="field">
+        <label for="calls">Calls you miss per week</label>
+        <div class="inputbox"><input id="calls" type="number" min="0" value="10"></div>
+        <div class="hint">While on a job, after hours, double-booked. Home-services average is ~27% of all calls.</div>
+      </div>
+      <div class="field">
+        <label for="ticket">Average job value</label>
+        <div class="inputbox"><span class="pre">$</span><input id="ticket" type="number" min="0" value="475"></div>
+        <div class="hint">A repair, tune-up, or install — whatever a typical booked job is worth to you.</div>
+      </div>
+    </div>
+
+    <button class="atoggle" id="atoggle">▸ Adjust the assumptions</button>
+    <div class="acollapse" id="acollapse">
+      <div class="assumptions">
+        <div class="arow">
+          <span class="albl">Of missed callers, <b>% who never call back</b> (industry: ~85%)</span>
+          <input type="range" id="lostPct" min="50" max="85" value="75">
+          <span class="aval" id="lostPctV">75%</span>
+        </div>
+        <div class="arow">
+          <span class="albl">Of those lost callers, <b>% who were a real job</b></span>
+          <input type="range" id="jobPct" min="15" max="50" value="30">
+          <span class="aval" id="jobPctV">30%</span>
+        </div>
+        <div class="arow">
+          <span class="albl">% the text-back system <b>realistically recovers</b></span>
+          <input type="range" id="recPct" min="20" max="60" value="40">
+          <span class="aval" id="recPctV">40%</span>
+        </div>
+        <p class="hint" style="margin-top:4px">Drag these <b>down</b> to be even more conservative on a call — a lower number you can defend closes better than a big one you can't.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="result">
+    <div class="rlbl">Revenue you're likely losing</div>
+    <div class="bignum" id="lossMo">$0<span class="per">/mo</span></div>
+    <div class="ryear">That's about <b id="lossYr">$0</b> a year walking out the door.</div>
+  </div>
+
+  <div class="compare">
+    <div class="cbox loss">
+      <div class="clbl">Lost now (recoverable)</div>
+      <div class="cval" id="recMo">$0<span style="font-size:.5em">/mo</span></div>
+      <div class="csub">What this system can plausibly bring back</div>
+    </div>
+    <div class="cbox cost">
+      <div class="clbl">What it costs to run</div>
+      <div class="cval">$675<span style="font-size:.5em">/mo</span></div>
+      <div class="csub">+ $2,400 one-time setup</div>
+    </div>
+  </div>
+
+  <div class="payback">
+    <div class="pt">At these numbers, the setup pays for itself in <b id="payback">—</b> — then it's pure recovered revenue.</div>
+  </div>
+
+  <div style="text-align:center">
+    <a class="cta" href="/demo">See exactly how it works →</a>
+  </div>
+
+  <div class="sources">
+    <b>Where these numbers come from:</b> Published 2026 home-services research finds businesses miss roughly 22–40% of inbound calls, that ~85% of unanswered callers never call back (and ~80% won't leave a voicemail), and that a large share of missed calls can be recovered with an automated text-back sent within one minute. This calculator intentionally uses figures at or below the conservative end of that research.
+  </div>
+  <div class="fine">Estimate only · final setup customized per business</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const callsEl=$('calls'), ticketEl=$('ticket');
+const lostEl=$('lostPct'), jobEl=$('jobPct'), recEl=$('recPct');
+
+function fmt(n){return '$'+Math.round(n).toLocaleString('en-US')}
+function fmtK(n){ // shorter year figure
+  if(n>=1000) return '$'+Math.round(n).toLocaleString('en-US');
+  return '$'+Math.round(n);
+}
+
+function calc(){
+  const calls=Math.max(0,+callsEl.value||0);
+  const ticket=Math.max(0,+ticketEl.value||0);
+  const lost=(+lostEl.value)/100;
+  const job=(+jobEl.value)/100;
+  const rec=(+recEl.value)/100;
+
+  $('lostPctV').textContent=(+lostEl.value)+'%';
+  $('jobPctV').textContent=(+jobEl.value)+'%';
+  $('recPctV').textContent=(+recEl.value)+'%';
+
+  // weekly lost jobs = missed calls * never-call-back * were-a-real-job
+  const lostJobsWk = calls*lost*job;
+  const lostRevWk = lostJobsWk*ticket;
+  const lostRevMo = lostRevWk*4.33;
+  const lostRevYr = lostRevWk*52;
+
+  // recoverable portion
+  const recMo = lostRevMo*rec;
+
+  $('lossMo').innerHTML=fmt(lostRevMo)+'<span class="per">/mo</span>';
+  $('lossYr').textContent=fmtK(lostRevYr);
+  $('recMo').innerHTML=fmt(recMo)+'<span style="font-size:.5em">/mo</span>';
+
+  // payback: $2400 setup / (recovered monthly net of $675 run cost)
+  const netMo = recMo - 675;
+  let pb;
+  if(netMo<=0){
+    pb='—';
+  }else{
+    const months = 2400/netMo;
+    if(months<1){
+      const days=Math.max(1,Math.round(months*30));
+      pb = days+(days===1?' day':' days');
+    }else if(months<2){
+      pb = 'about '+Math.round(months*4.33)+' weeks';
+    }else{
+      pb = Math.ceil(months)+' months';
+    }
+  }
+  $('payback').textContent=pb;
+}
+
+[callsEl,ticketEl,lostEl,jobEl,recEl].forEach(el=>{
+  el.addEventListener('input',calc);
+});
+$('atoggle').addEventListener('click',()=>{
+  const c=$('acollapse');
+  c.classList.toggle('open');
+  $('atoggle').textContent=c.classList.contains('open')?'▾ Hide assumptions':'▸ Adjust the assumptions';
+});
+calc();
+</script>
+</body>
+</html>
