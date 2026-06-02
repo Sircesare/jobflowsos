@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>See the AI Receptionist in Action — JobflowsOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* mapped to jobflowsos.com real tokens (FontStyle.tsx) */
+    --bg:#07090F;          /* --bg-primary */
+    --bg2:#0B1020;         /* --bg-secondary */
+    --panel:#111827;       /* --surface */
+    --panel2:#0B1020;
+    --elevated:#1A2333;    /* --elevated */
+    --line:#1f2937;        /* --border */
+    --line-strong:#2a3447; /* --border-strong */
+    --ink:#F8FAFC;         /* --text-1 */
+    --ink2:#CBD5E1;        /* --text-2 */
+    --mute:#94A3B8;        /* --text-3 */
+    --faint:#64748B;       /* --text-4 */
+    --gold:#D6A84F;        /* --gold */
+    --gold-bright:#F5C542; /* --gold-bright */
+    --gold-soft:#E9C46A;   /* --gold-soft */
+    --blue:#2563EB;        /* --blue */
+    --blue-hover:#3B82F6;  /* --blue-hover */
+    --blue-soft:#60A5FA;   /* --blue-soft */
+    --bubble:#1A2333;      /* --elevated, for bot bubbles */
+    --me:#2563EB;          /* --blue, for customer bubbles */
+    --red:#EF4444;         /* --error */
+    --green:#10B981;       /* --success */
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(37,99,235,.08), transparent 60%),
+      linear-gradient(180deg, var(--bg), var(--bg2) 40%, var(--bg));
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+  /* ---- hero ---- */
+  header{position:relative;padding:74px 0 30px;border-bottom:1px solid var(--line);overflow:hidden}
+  header::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+    background-image:radial-gradient(circle, rgba(148,163,184,0.08) 1px, transparent 1px);background-size:28px 28px}
+  header > .wrap{position:relative;z-index:1}
+  .kicker{font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.32em;color:var(--faint);text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:'Geist',sans-serif;font-size:clamp(38px,6vw,68px);font-weight:600;letter-spacing:-.02em;line-height:1.04}
+  h1 .hl{color:var(--gold-soft)}
+  .sub{max-width:620px;margin-top:20px;color:var(--mute);font-size:18px}
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+  .badge{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);
+    border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:var(--panel2)}
+  .badge b{color:var(--ink)}
+
+  /* ---- brand bar ---- */
+  .brandbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:30px 0 10px;
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .brandbar label{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .brandbar input{flex:1;min-width:200px;background:var(--bg2);border:1px solid var(--line);border-radius:9px;
+    color:var(--ink);font-family:'Inter';font-size:15px;padding:11px 14px;outline:none}
+  .brandbar input:focus{border-color:var(--blue)}
+  .brandbar .hint{font-size:13px;color:var(--faint);flex-basis:100%}
+
+  /* ---- main grid ---- */
+  .stage{display:grid;grid-template-columns:1fr 388px;gap:34px;padding:38px 0 60px;align-items:start}
+  @media(max-width:880px){.stage{grid-template-columns:1fr}}
+
+  .panelTitle{font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+  .panelLead{color:var(--mute);font-size:15px;margin-bottom:20px}
+
+  /* scenario buttons */
+  .sgroup{margin-bottom:22px}
+  .sgroup h3{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);
+    margin-bottom:11px;display:flex;align-items:center;gap:8px}
+  .dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+  .dot.normal{background:var(--blue)}
+  .dot.emerg{background:var(--red)}
+  .dot.price{background:var(--gold)}
+  .btns{display:flex;flex-direction:column;gap:9px}
+  .sbtn{text-align:left;background:var(--panel);border:1px solid var(--line);color:var(--ink);
+    font-family:'Inter';font-size:15px;font-weight:600;padding:13px 16px;border-radius:11px;cursor:pointer;
+    transition:.16s;display:flex;align-items:center;gap:11px;position:relative}
+  .sbtn:hover{border-color:var(--blue);background:#16202c;transform:translateX(3px)}
+  .sbtn .ic{font-size:18px}
+  .sbtn.e:hover{border-color:var(--red)}
+  .sbtn.p:hover{border-color:var(--gold)}
+  .sbtn .tag{margin-left:auto;font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--faint);border:1px solid var(--line);border-radius:5px;padding:3px 7px}
+  .resetRow{margin-top:8px}
+  .reset{background:transparent;border:1px solid var(--line);color:var(--mute);font-family:'Geist Mono',monospace;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:9px 14px;border-radius:8px;cursor:pointer;transition:.16s}
+  .reset:hover{border-color:var(--mute);color:var(--ink)}
+
+  /* phone */
+  .phoneWrap{position:sticky;top:24px}
+  .phone{background:#000;border:1px solid #232c38;border-radius:30px;padding:11px;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+  .screen{background:#05070a;border-radius:22px;overflow:hidden;height:600px;display:flex;flex-direction:column}
+  .statusbar{display:flex;justify-content:space-between;align-items:center;padding:11px 18px 8px;font-family:'Geist Mono',monospace;
+    font-size:12px;color:#9aa6b4}
+  .statusbar .ico{display:flex;gap:5px;align-items:center;opacity:.7;font-size:11px}
+  .convhead{background:#0c1118;padding:13px;text-align:center;border-bottom:1px solid #161d27}
+  .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#2a3645,#1a2330);display:inline-flex;
+    align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#cfd8e3;margin-bottom:5px}
+  .convhead .nm{font-size:13px;font-weight:600;color:#e6ecf3}
+  .convhead .nm span{color:#5a6675;font-weight:400}
+  .msgs{flex:1;overflow-y:auto;padding:16px 14px 20px;display:flex;flex-direction:column;gap:9px;scroll-behavior:smooth}
+  .msgs::-webkit-scrollbar{width:5px}.msgs::-webkit-scrollbar-thumb{background:#1c2733;border-radius:3px}
+  .daystamp{text-align:center;font-size:11px;color:#4a5562;margin:2px 0 6px;font-weight:600}
+  .daystamp span{color:#36404d;font-weight:400}
+  .bubble{max-width:80%;padding:10px 13px;border-radius:16px;font-size:14.5px;line-height:1.42;animation:pop .28s ease}
+  .bot{background:var(--bubble);color:#e6ecf3;border-bottom-left-radius:5px;align-self:flex-start}
+  .me{background:var(--me);color:#fff;border-bottom-right-radius:5px;align-self:flex-end}
+  @keyframes pop{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:none}}
+  .typing{align-self:flex-start;background:var(--bubble);border-radius:16px;border-bottom-left-radius:5px;padding:13px 15px;display:flex;gap:4px}
+  .typing i{width:6px;height:6px;border-radius:50%;background:#5a6675;animation:tp 1.2s infinite}
+  .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+  @keyframes tp{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+  .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#3a4452;padding:30px;gap:10px}
+  .empty .big{font-size:30px}
+  .empty p{font-size:13px;max-width:200px}
+
+  /* contextual coaching note that appears under phone */
+  .note{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:0 12px 12px 0;padding:14px 16px;font-size:13.5px;color:var(--mute);min-height:0;opacity:0;transition:.3s;line-height:1.5}
+  .note.show{opacity:1}
+  .note b{color:var(--gold);font-weight:700}
+  .note .ttl{font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:6px}
+
+  /* outcome strip */
+  .outcome{margin-top:14px;background:linear-gradient(135deg,#0f1620,#0c1118);border:1px solid var(--line);border-radius:14px;
+    padding:16px 18px;display:none;animation:pop .4s ease}
+  .outcome.show{display:block}
+  .outcome .lbl{font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin-bottom:10px}
+  .outcome.emerg .lbl{color:var(--red)}
+  .ostats{display:flex;gap:20px}
+  .ostat .v{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:600;color:var(--gold);font-feature-settings:'tnum'}
+  .ostat .k{font-size:11px;color:var(--faint);margin-top:1px}
+
+  /* footer cta */
+  footer{border-top:1px solid var(--line);padding:50px 0 70px;text-align:center}
+  footer h2{font-family:'Geist',sans-serif;font-size:clamp(26px,4vw,40px);font-weight:600;letter-spacing:-.02em}
+  footer h2 .hl{color:var(--gold-soft)}
+  footer p{color:var(--ink2);max-width:540px;margin:14px auto 0;font-size:16px}
+  .cta{display:inline-flex;align-items:center;gap:10px;margin-top:26px;background:var(--blue);color:#fff;
+    font-weight:500;font-size:15px;padding:15px 28px;border-radius:10px;text-decoration:none;transition:.18s}
+  .cta:hover{background:var(--blue-hover);box-shadow:0 0 30px -5px rgba(96,165,250,.45)}
+  .fine{font-family:'Geist Mono',monospace;font-size:10px;color:var(--faint);margin-top:30px;letter-spacing:.2em;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">JobflowsOS · Live Demo</div>
+    <h1>Every missed call,<br><span class="hl">answered in 30 seconds.</span></h1>
+    <p class="sub">This is the AI receptionist that texts your missed callers back, books the normal jobs, and flags the emergencies — so you never lose a customer to voicemail again. Tap a scenario below and watch it work.</p>
+    <div class="badges">
+      <span class="badge"><b>Books</b> normal jobs automatically</span>
+      <span class="badge"><b>Triages</b> emergencies to a fast callback</span>
+      <span class="badge"><b>24/7</b> · never sleeps, never misses</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="brandbar">
+    <label for="biz">Try it as</label>
+    <input id="biz" type="text" value="Valley Air HVAC" maxlength="40" aria-label="Business name">
+    <label for="owner" style="margin-left:4px">Owner</label>
+    <input id="owner" type="text" value="Mike" maxlength="24" style="max-width:140px" aria-label="Owner name">
+    <span class="hint">↑ Type any business — the demo instantly speaks as them. (On a real call, this is set to your client.)</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="stage">
+
+    <!-- LEFT: scenario picker -->
+    <div>
+      <div class="panelTitle">Pick a scenario</div>
+      <div class="panelLead">These are the calls you're missing right now. Tap one to see exactly how the bot handles it.</div>
+
+      <div class="sgroup">
+        <h3><span class="dot normal"></span> Normal jobs — it books them</h3>
+        <div class="btns">
+          <button class="sbtn" data-s="cooling"><span class="ic">🌀</span> "My AC isn't cooling well" <span class="tag">books it</span></button>
+          <button class="sbtn" data-s="tuneup"><span class="ic">🔧</span> "I just need a tune-up" <span class="tag">books it</span></button>
+          <button class="sbtn" data-s="quote"><span class="ic">📋</span> "Can I get a quote on a new unit?" <span class="tag">books it</span></button>
+        </div>
+      </div>
+
+      <div class="sgroup">
+        <h3><span class="dot emerg"></span> Emergencies — it does NOT book, it alerts you</h3>
+        <div class="btns">
+          <button class="sbtn e" data-s="died"><span class="ic">🥵</span> "AC died and it's 100° out" <span class="tag">callback</span></button>
+          <button class="sbtn e" data-s="gas"><span class="ic">⛽</span> "I smell gas" <span class="tag">911 + callback</span></button>
+          <button class="sbtn e" data-s="water"><span class="ic">💧</span> "Water's leaking from the unit" <span class="tag">callback</span></button>
+          <button class="sbtn e" data-s="burning"><span class="ic">⚡</span> "Burning smell / sparking" <span class="tag">callback</span></button>
+        </div>
+      </div>
+
+      <div class="sgroup">
+        <h3><span class="dot price"></span> The question every owner asks</h3>
+        <div class="btns">
+          <button class="sbtn p" data-s="price"><span class="ic">💰</span> "How much do you charge?" <span class="tag">your policy</span></button>
+        </div>
+      </div>
+
+      <div class="resetRow">
+        <button class="reset" id="reset">↺ Reset conversation</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: phone -->
+    <div class="phoneWrap">
+      <div class="phone">
+        <div class="screen">
+          <div class="statusbar">
+            <span id="clock">2:14</span>
+            <span class="ico">•••• 🌐 ▮▮</span>
+          </div>
+          <div class="convhead">
+            <div class="avatar" id="ava">VA</div>
+            <div class="nm" id="convname">Valley Air HVAC <span>›</span></div>
+          </div>
+          <div class="msgs" id="msgs">
+            <div class="empty" id="empty">
+              <div class="big">👈</div>
+              <p>Tap a scenario to start the text conversation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note" id="note"></div>
+      <div class="outcome" id="outcome">
+        <div class="lbl" id="outlbl">Outcome · Booked</div>
+        <div class="ostats" id="ostats"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <h2>This runs on <span class="hl">your</span> business in about two weeks.</h2>
+    <p>Built on your calendar, your service area, your fee policy. You collect the jobs — it does the catching. One recovered AC install pays for the whole setup.</p>
+    <a class="cta" href="#" id="cta">Get this on my business →</a>
+    <div class="fine">Demo interface · final setup customized per business</div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   SCRIPTED DEMO ENGINE
+   No AI, no API calls, no cost. Every path is pre-written.
+   Buttons only — no free-text box that could break.
+   ============================================================ */
+
+const biz = document.getElementById('biz');
+const owner = document.getElementById('owner');
+const msgsEl = document.getElementById('msgs');
+const emptyEl = document.getElementById('empty');
+const noteEl = document.getElementById('note');
+const outcomeEl = document.getElementById('outcome');
+const outlblEl = document.getElementById('outlbl');
+const ostatsEl = document.getElementById('ostats');
+
+function B(){return biz.value.trim()||'your business'}
+function O(){return owner.value.trim()||'the owner'}
+
+// keep header + avatar in sync with the brand field
+function syncBrand(){
+  document.getElementById('convname').innerHTML = B()+' <span>›</span>';
+  const initials = B().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'VA';
+  document.getElementById('ava').textContent = initials;
+}
+biz.addEventListener('input',syncBrand);
+owner.addEventListener('input',syncBrand);
+
+// ---- scripts: each is a list of turns. who: 'me' (customer) or 'bot'. ----
+function scripts(){
+  const b=B(), o=O();
+  return {
+    cooling:{type:'normal',turns:[
+      {who:'bot',t:`Hey, this is ${o} at ${b} — sorry I missed your call. What's going on with your AC?`},
+      {who:'me',t:`My AC isn't cooling well, can you guys take a look this week?`},
+      {who:'bot',t:`Sorry to hear that. Before I get you on the schedule — what's the service address (street + city)?`},
+      {who:'me',t:`9234 Tyler Ave, El Monte`},
+      {who:'bot',t:`Got it. And your name?`},
+      {who:'me',t:`Jenny`},
+      {who:'bot',t:`Thanks Jenny. I've got tomorrow 11am or Thursday 2pm open — which works?`},
+      {who:'me',t:`Tomorrow 11 is good`},
+      {who:'bot',t:`Booked — tomorrow 11am, 9234 Tyler Ave. ${o} will see you then. Is this the best number to reach you?`},
+    ],note:{ttl:'What just happened',html:`The bot <b>required the address before offering a single time slot</b> — no half-baked bookings. It put a real job on ${o}'s calendar and logged Jenny as a lead, all while ${o} was on another roof.`},
+    out:{lbl:'Outcome · Booked',stats:[['$475','Avg ticket booked'],['4 min',`${o}'s time spent`],['0','Receptionist payroll']]}},
+
+    tuneup:{type:'normal',turns:[
+      {who:'bot',t:`Hey, this is ${o} at ${b} — sorry I missed your call. How can we help?`},
+      {who:'me',t:`Just want to get a tune-up scheduled before summer`},
+      {who:'bot',t:`Smart timing. What's the service address so I can pull up availability?`},
+      {who:'me',t:`145 Live Oak, Arcadia`},
+      {who:'bot',t:`Perfect — and your name?`},
+      {who:'me',t:`Dave`},
+      {who:'bot',t:`Thanks Dave. I've got Friday 9am or 1pm for the tune-up — preference?`},
+      {who:'me',t:`9am works`},
+      {who:'bot',t:`Done — Friday 9am at 145 Live Oak. You're on the calendar. Is this your best number?`},
+    ],note:{ttl:'What just happened',html:`A low-urgency job most owners never even hear about — captured and booked automatically. <b>This is the revenue that normally leaks to voicemail.</b>`},
+    out:{lbl:'Outcome · Booked',stats:[['$189','Tune-up booked'],['Seasonal','Repeat customer'],['0','Receptionist payroll']]}},
+
+    quote:{type:'normal',turns:[
+      {who:'bot',t:`Hey, this is ${o} at ${b} — sorry I missed your call. What can we help with?`},
+      {who:'me',t:`Looking to get a quote on replacing my old unit`},
+      {who:'bot',t:`Happy to get someone out to look at it. What's the service address?`},
+      {who:'me',t:`88 Walnut Grove, San Gabriel`},
+      {who:'bot',t:`Great — and your name?`},
+      {who:'me',t:`Maria`},
+      {who:'bot',t:`Thanks Maria. ${o} does on-site estimates — I've got Wednesday 10am or 3pm open. Which is better?`},
+      {who:'me',t:`3pm`},
+      {who:'bot',t:`Set — Wednesday 3pm at 88 Walnut Grove for the estimate. Best number to confirm?`},
+    ],note:{ttl:'What just happened',html:`A replacement quote is a <b>high-ticket lead</b> — exactly the kind you can't afford to miss. The bot booked the estimate instead of letting Maria call the next company on Google.`},
+    out:{lbl:'Outcome · Estimate Booked',stats:[['$6k–12k','Potential job'],['Captured','vs. lost to voicemail'],['0','Receptionist payroll']]}},
+
+    died:{type:'emerg',turns:[
+      {who:'bot',t:`Hey, this is ${o} at ${b} — sorry I missed your call. What's going on?`},
+      {who:'me',t:`My AC completely died and it's 100 degrees in here`},
+      {who:'bot',t:`That's miserable in this heat — I'm sorry. This is urgent, so I'm not going to make you wait for a scheduled slot. ${o} will call you back personally, within 15–30 min during business hours. What's the address?`},
+      {who:'me',t:`9234 Tyler Ave, El Monte`},
+      {who:'bot',t:`Got it. Quick question so ${o} can come prepared — is the unit totally dead, or running but blowing warm? Any tripped breaker?`},
+      {who:'me',t:`Totally dead, nothing turns on`},
+      {who:'bot',t:`Thank you. ${o} has everything he needs and will call you right back. Hang in there — help's on the way.`},
+    ],note:{ttl:'Why it didn\'t book',html:`A bot that blindly books a "no AC in 100° heat" call for next Tuesday would <b>lose you the customer</b>. Instead it triaged, refused to book, grabbed the details ${o} needs, and <b>fired an instant text alert to ${o}'s phone</b> to call back fast.`},
+    out:{lbl:'Outcome · Emergency Routed',stats:[['<30 min','Callback window'],['Instant','Alert to '+O()],['Details','Captured for the call']]}},
+
+    gas:{type:'emerg',turns:[
+      {who:'bot',t:`Hey, this is ${o} at ${b} — sorry I missed your call. What's going on?`},
+      {who:'me',t:`I think I smell gas in the house`},
+      {who:'bot',t:`That's a safety issue first. If the smell is strong, leave the house now and call 911 or your gas company from outside. Are you okay to do that?`},
+      {who:'me',t:`Yeah it's faint, I'm okay`},
+      {who:'bot',t:`Good. Once you're safe, ${o} will call you back personally and fast. What's the address so he's ready to head out?`},
+      {who:'me',t:`9234 Tyler Ave, El Monte`},
+      {who:'bot',t:`Got it. ${o} will call you right back. Please stay safe and ventilate if you can.`},
+    ],note:{ttl:'Why it didn\'t book',html:`This is the scenario that scares every owner about AI. The bot <b>put safety first — told them to call 911 — refused to book, and alerted ${o} immediately.</b> No bot should ever schedule a suspected gas leak for "next Tuesday," and yours won't.`},
+    out:{lbl:'Outcome · Safety Routed',stats:[['911','Advised first'],['Instant','Alert to '+O()],['Zero','Liability bookings']]}},
+
+    water:{type:'emerg',turns:[
+      {who:'bot',t:`Hey, this is ${o} at ${b} — sorry I missed your call. What's happening?`},
+      {who:'me',t:`There's water leaking out of my AC unit onto the floor`},
+      {who:'bot',t:`Let's get that handled fast before it does damage. ${o} will call you back personally, quickly. What's the address?`},
+      {who:'me',t:`145 Live Oak, Arcadia`},
+      {who:'bot',t:`Thanks. Is it a steady drip or pooling fast? And is the unit still running?`},
+      {who:'me',t:`Pooling pretty fast, still running`},
+      {who:'bot',t:`Got it — if it's easy and safe, switch the unit off to slow the leak. ${o} has the details and will call you right back.`},
+    ],note:{ttl:'Why it didn\'t book',html:`Active water damage can't wait for a scheduled visit. The bot gave a <b>safe interim instruction</b>, captured severity, and routed it to ${o} with an instant alert — protecting both the customer's home and your reputation.`},
+    out:{lbl:'Outcome · Emergency Routed',stats:[['<30 min','Callback window'],['Instant','Alert to '+O()],['Damage','Mitigated early']]}},
+
+    burning:{type:'emerg',turns:[
+      {who:'bot',t:`Hey, this is ${o} at ${b} — sorry I missed your call. What's going on?`},
+      {who:'me',t:`I smell something burning and the unit was sparking`},
+      {who:'bot',t:`That's an electrical hazard — please turn the system off at the breaker now if you can do it safely. Done?`},
+      {who:'me',t:`Ok just shut it off`},
+      {who:'bot',t:`Good call. ${o} will phone you back personally and fast. What's the address?`},
+      {who:'me',t:`88 Walnut Grove, San Gabriel`},
+      {who:'bot',t:`Got it. Leave the system off until ${o} reaches you — he'll call right back.`},
+    ],note:{ttl:'Why it didn\'t book',html:`Sparking and burning smells are fire risk. The bot <b>gave the safe action (kill the breaker), refused to book, and alerted ${o} instantly.</b> This is the judgment that makes owners trust it with their phone line.`},
+    out:{lbl:'Outcome · Safety Routed',stats:[['Breaker','Advised off'],['Instant','Alert to '+O()],['Fire risk','De-escalated']]}},
+
+    price:{type:'price',turns:[
+      {who:'bot',t:`Hey, this is ${o} at ${b} — sorry I missed your call. What can we help with?`},
+      {who:'me',t:`Before anything — how much do you charge?`},
+      {who:'bot',t:`Totally fair to ask. I can't quote a repair price sight-unseen, but our service-call fee is $89, and it's waived if you book the repair with us. Want me to find you a time?`},
+      {who:'me',t:`Ok yeah that's reasonable, let's do it`},
+      {who:'bot',t:`Great — what's the service address?`},
+      {who:'me',t:`9234 Tyler Ave, El Monte`},
+      {who:'bot',t:`Perfect. I've got tomorrow 11am or Thursday 2pm. Which works?`},
+    ],note:{ttl:'★ This part is customizable to YOU',html:`That $89 / waived-if-booked answer is a <b>placeholder</b>. On your build we set it to your real policy: <b>free estimates? flat diagnostic fee? service call waived on repair?</b> The bot holds the line on job quotes (protecting your margin) but answers the basic fee question so you don't lose the booking to silence.`},
+    out:{lbl:'Outcome · Objection Handled → Booking',stats:[['Held','No blind quotes'],['Answered','Fee policy'],['Saved','The booking']]}},
+  };
+}
+
+let timers=[];
+function clearTimers(){timers.forEach(t=>clearTimeout(t));timers=[]}
+
+function addBubble(who,text){
+  const d=document.createElement('div');
+  d.className='bubble '+(who==='me'?'me':'bot');
+  d.textContent=text;
+  msgsEl.appendChild(d);
+  msgsEl.scrollTop=msgsEl.scrollHeight;
+}
+function showTyping(){
+  const t=document.createElement('div');t.className='typing';t.id='typing';
+  t.innerHTML='<i></i><i></i><i></i>';
+  msgsEl.appendChild(t);msgsEl.scrollTop=msgsEl.scrollHeight;
+}
+function hideTyping(){const t=document.getElementById('typing');if(t)t.remove()}
+
+function resetConv(){
+  clearTimers();
+  msgsEl.innerHTML='';
+  noteEl.classList.remove('show');noteEl.innerHTML='';
+  outcomeEl.classList.remove('show','emerg');
+  const e=document.createElement('div');e.className='empty';e.id='empty';
+  e.innerHTML='<div class="big">👈</div><p>Tap a scenario to start the text conversation.</p>';
+  msgsEl.appendChild(e);
+}
+
+function run(key){
+  clearTimers();
+  msgsEl.innerHTML='';
+  noteEl.classList.remove('show');
+  outcomeEl.classList.remove('show','emerg');
+
+  // daystamp
+  const ds=document.createElement('div');ds.className='daystamp';
+  ds.innerHTML='Tuesday <span>2:14 PM</span>';
+  msgsEl.appendChild(ds);
+
+  const data=scripts()[key];
+  let delay=200;
+  data.turns.forEach((turn)=>{
+    if(turn.who==='bot'){
+      timers.push(setTimeout(showTyping,delay));
+      delay+=850;
+      timers.push(setTimeout(()=>{hideTyping();addBubble('bot',turn.t)},delay));
+      delay+=450;
+    }else{
+      delay+=550;
+      timers.push(setTimeout(()=>addBubble('me',turn.t),delay));
+      delay+=300;
+    }
+  });
+
+  // reveal note + outcome at the end
+  timers.push(setTimeout(()=>{
+    noteEl.innerHTML='<span class="ttl">'+data.note.ttl+'</span>'+data.note.html;
+    noteEl.classList.add('show');
+    outlblEl.textContent=data.out.lbl;
+    if(data.type==='emerg')outcomeEl.classList.add('emerg');
+    ostatsEl.innerHTML=data.out.stats.map(s=>`<div class="ostat"><div class="v">${s[0]}</div><div class="k">${s[1]}</div></div>`).join('');
+    outcomeEl.classList.add('show');
+    msgsEl.scrollTop=msgsEl.scrollHeight;
+  },delay+250));
+}
+
+document.querySelectorAll('.sbtn').forEach(b=>{
+  b.addEventListener('click',()=>run(b.dataset.s));
+});
+document.getElementById('reset').addEventListener('click',resetConv);
+
+// live clock-ish flavor (static-safe)
+syncBrand();
+</script>
+</body>
+</html>
