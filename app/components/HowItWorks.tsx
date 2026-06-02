@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Inbox, Workflow, TrendingUp } from "lucide-react";
+import { Inbox, Workflow, TrendingUp, ArrowRight } from "lucide-react";
 
 export const HowItWorks = () => {
   const steps = [
@@ -51,6 +51,14 @@ export const HowItWorks = () => {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        <div className="text-center mt-12">
+          <a href="/demo"
+             className="group inline-flex items-center gap-2 font-body font-medium text-[14px] text-white bg-[var(--blue)] hover:bg-[var(--blue-hover)] px-5 py-3.5 rounded-lg transition-all hover:shadow-[0_0_30px_-5px_var(--blue-glow-2)]">
+            See it handle a real call
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" />
+          </a>
         </div>
       </div>
     </section>

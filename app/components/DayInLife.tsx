@@ -24,6 +24,10 @@ export const DayInLife = () => (
             You can't be on the ladder and on the phone at the same time.
             That's exactly the gap this system was built to close.
           </p>
+          <a href="/calculator"
+             className="inline-flex items-center gap-2 mt-7 font-body font-medium text-[14px] text-white bg-[var(--blue)] hover:bg-[var(--blue-hover)] px-5 py-3.5 rounded-lg transition-all hover:shadow-[0_0_30px_-5px_var(--blue-glow-2)]">
+            Calculate what that's costing you
+          </a>
         </div>
       </div>
     </div>

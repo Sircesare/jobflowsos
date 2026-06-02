@@ -51,6 +51,8 @@ export const Nav = () => {
             <a href="#pipeline" className="hover:text-white transition">Live view</a>
             <a href="#industries" className="hover:text-white transition">Industries</a>
             <a href="#pricing" className="hover:text-white transition">Pricing</a>
+            <a href="/calculator" className="hover:text-white transition">Calculator</a>
+            <a href="/demo" className="hover:text-white transition">Demo</a>
           </nav>
 
           <div className="flex items-center gap-2">
