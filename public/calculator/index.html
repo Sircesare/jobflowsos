@@ -147,8 +147,8 @@
     </div>
     <div class="cbox cost">
       <div class="clbl">What it costs to run</div>
-      <div class="cval">$675<span style="font-size:.5em">/mo</span></div>
-      <div class="csub">+ $2,400 one-time setup</div>
+      <div class="cval">$650<span style="font-size:.5em">/mo</span></div>
+      <div class="csub">+ $2,400 one-time setup · Father's Day pricing</div>
     </div>
   </div>
 
@@ -201,8 +201,8 @@ function calc(){
   $('lossYr').textContent=fmtK(lostRevYr);
   $('recMo').innerHTML=fmt(recMo)+'<span style="font-size:.5em">/mo</span>';
 
-  // payback: $2400 setup / (recovered monthly net of $675 run cost)
-  const netMo = recMo - 675;
+  // payback: $2400 setup / (recovered monthly net of $650 run cost)
+  const netMo = recMo - 650;
   let pb;
   if(netMo<=0){
     pb='—';
