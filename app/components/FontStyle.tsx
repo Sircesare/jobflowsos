@@ -34,6 +34,15 @@ export const FontStyle = () => (
       --gold-glow:    rgba(214,168,79,0.18);
       --gold-warm:    rgba(245,197,66,0.10);
 
+      /* Father's Day promo accents — temporary, remove after June 19 */
+      --fd-coral:       #D85A30;
+      --fd-coral-soft:  #F0997B;
+      --fd-amber:       #EF9F27;
+      --fd-amber-soft:  #FAC775;
+      --fd-coral-glow:  rgba(216,90,48,0.35);
+      --fd-coral-wash:  rgba(216,90,48,0.10);
+      --fd-amber-deep:  #412402;
+
       --text-1:       #F8FAFC;
       --text-2:       #CBD5E1;
       --text-3:       #94A3B8;
@@ -101,6 +110,16 @@ export const FontStyle = () => (
         0 0 0 1px rgba(214,168,79,0.35),
         0 0 50px -10px rgba(245,197,66,0.4),
         inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    /* Father's Day promo — temporary, remove after June 19 */
+    .glow-fd {
+      box-shadow:
+        0 0 0 1px var(--fd-coral-glow),
+        0 0 50px -10px rgba(216,90,48,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .fd-banner {
+      background: linear-gradient(90deg, var(--fd-coral) 0%, var(--fd-amber) 100%);
     }
     .glow-card {
       box-shadow:
