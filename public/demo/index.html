@@ -52,8 +52,10 @@
     background-image:radial-gradient(circle, rgba(148,163,184,0.08) 1px, transparent 1px);background-size:28px 28px}
   header > .wrap{position:relative;z-index:1}
   .kicker{font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.32em;color:var(--faint);text-transform:uppercase;margin-bottom:18px}
+  a.back{display:inline-block;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-soft);text-decoration:none;margin-bottom:20px}
+  a.back:hover{color:var(--blue-hover)}
   h1{font-family:'Geist',sans-serif;font-size:clamp(38px,6vw,68px);font-weight:600;letter-spacing:-.02em;line-height:1.04}
-  h1 .hl{color:var(--gold-soft)}
+  h1 .hl{color:var(--blue-soft)}
   .sub{max-width:620px;margin-top:20px;color:var(--mute);font-size:18px}
   .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
   .badge{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);
@@ -91,7 +93,7 @@
   .sbtn:hover{border-color:var(--blue);background:#16202c;transform:translateX(3px)}
   .sbtn .ic{font-size:18px}
   .sbtn.e:hover{border-color:var(--red)}
-  .sbtn.p:hover{border-color:var(--gold)}
+  .sbtn.p:hover{border-color:var(--blue)}
   .sbtn .tag{margin-left:auto;font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.1em;
     text-transform:uppercase;color:var(--faint);border:1px solid var(--line);border-radius:5px;padding:3px 7px}
   .resetRow{margin-top:8px}
@@ -128,10 +130,10 @@
   .empty p{font-size:13px;max-width:200px}
 
   /* contextual coaching note that appears under phone */
-  .note{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold);
+  .note{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--blue);
     border-radius:0 12px 12px 0;padding:14px 16px;font-size:13.5px;color:var(--mute);min-height:0;opacity:0;transition:.3s;line-height:1.5}
   .note.show{opacity:1}
-  .note b{color:var(--gold);font-weight:700}
+  .note b{color:var(--blue-soft);font-weight:700}
   .note .ttl{font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:6px}
 
   /* outcome strip */
@@ -147,7 +149,7 @@
   /* footer cta */
   footer{border-top:1px solid var(--line);padding:50px 0 70px;text-align:center}
   footer h2{font-family:'Geist',sans-serif;font-size:clamp(26px,4vw,40px);font-weight:600;letter-spacing:-.02em}
-  footer h2 .hl{color:var(--gold-soft)}
+  footer h2 .hl{color:var(--blue-soft)}
   footer p{color:var(--ink2);max-width:540px;margin:14px auto 0;font-size:16px}
   .cta{display:inline-flex;align-items:center;gap:10px;margin-top:26px;background:var(--blue);color:#fff;
     font-weight:500;font-size:15px;padding:15px 28px;border-radius:10px;text-decoration:none;transition:.18s}
@@ -159,6 +161,7 @@
 
 <header>
   <div class="wrap">
+    <a class="back" href="/">← Back to JobflowsOS</a>
     <div class="kicker">JobflowsOS · Live Demo</div>
     <h1>Every missed call,<br><span class="hl">answered in 30 seconds.</span></h1>
     <p class="sub">This is the AI receptionist that texts your missed callers back, books the normal jobs, and flags the emergencies — so you never lose a customer to voicemail again. Tap a scenario below and watch it work.</p>
@@ -254,7 +257,7 @@
   <div class="wrap">
     <h2>This runs on <span class="hl">your</span> business in about two weeks.</h2>
     <p>Built on your calendar, your service area, your fee policy. You collect the jobs — it does the catching. One recovered AC install pays for the whole setup.</p>
-    <a class="cta" href="#" id="cta">Get this on my business →</a>
+    <a class="cta" href="https://api.leadconnectorhq.com/widget/bookings/jobflowsos-15-minute-demo" target="_blank" rel="noopener noreferrer" id="cta">Get this on my business →</a>
     <div class="fine">Demo interface · final setup customized per business</div>
   </div>
 </footer>
