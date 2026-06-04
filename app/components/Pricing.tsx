@@ -49,7 +49,7 @@ export const Pricing = () => {
                 The full operational stack installed and live in your business within 7 days.
               </p>
 
-              <div className="grid sm:grid-cols-[1.4fr_1fr] gap-3 mt-6">
+              <div className="mt-6">
                 {/* Active Regular Pricing Card */}
                 <div className="relative p-5 rounded-xl border-2 overflow-hidden"
                      style={{
@@ -76,38 +76,6 @@ export const Pricing = () => {
                   </div>
                   <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-3)] mt-1.5">
                     infrastructure & support
-                  </div>
-                </div>
-
-                {/* Expired Sale Card */}
-                <div className="relative p-5 rounded-xl border opacity-60"
-                     style={{
-                       borderColor: "var(--border)",
-                       background: "rgba(255,255,255,0.015)"
-                     }}>
-                  <div className="font-mono text-[9px] uppercase tracking-[0.22em] mb-3 text-[var(--text-4)]">
-                    Memorial Day · Ended
-                  </div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-metric font-bold text-[40px] lg:text-[44px] leading-none tracking-tight line-through"
-                          style={{ color: "var(--text-4)", textDecorationColor: "rgba(148,163,184,0.5)" }}>
-                      $1,800
-                    </span>
-                  </div>
-                  <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-4)] mt-1.5">
-                    one-time install
-                  </div>
-                  <div className="flex items-baseline gap-2 mt-4 pt-4 border-t border-dashed border-[var(--border)]">
-                    <span className="font-metric font-bold text-[22px] lg:text-[24px] leading-none tracking-tight line-through"
-                          style={{ color: "var(--text-4)", textDecorationColor: "rgba(148,163,184,0.5)" }}>
-                      + $400<span className="text-[14px] font-medium">/mo</span>
-                    </span>
-                  </div>
-                  <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-4)] mt-1.5">
-                    infrastructure & support
-                  </div>
-                  <div className="mt-4 font-body text-[11px] text-[var(--text-4)] leading-relaxed italic">
-                    Memorial Day pricing has ended.
                   </div>
                 </div>
               </div>
