@@ -157,6 +157,29 @@
   .ostat .v{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:600;color:var(--gold);font-feature-settings:'tnum'}
   .ostat .k{font-size:11px;color:var(--faint);margin-top:1px}
 
+  /* booked calendar card */
+  .calcard{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    display:none;animation:pop .4s ease}
+  .calcard.show{display:block}
+  .calcard .chead{display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,#16202c,#0f1620);
+    padding:11px 16px;border-bottom:1px solid var(--line)}
+  .calcard .chead .cdot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+  .calcard .chead .ctitle{font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+  .calcard .chead .cical{margin-left:auto;font-size:15px;opacity:.7}
+  .calcard .cbody{display:flex;align-items:stretch;gap:0}
+  .calcard .cdate{flex:0 0 78px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:16px 8px;border-right:1px solid var(--line);background:var(--bg2)}
+  .calcard .cdate .cmon{font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-soft)}
+  .calcard .cdate .cday{font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:600;color:var(--ink);line-height:1}
+  .calcard .cdate .cdow{font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:2px}
+  .calcard .cdetail{flex:1;padding:14px 16px}
+  .calcard .cdetail .cjob{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:8px}
+  .calcard .crow{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink2);margin-top:4px}
+  .calcard .crow .ci{width:15px;text-align:center;opacity:.75;font-size:13px}
+  .calcard .cfoot{padding:9px 16px;border-top:1px solid var(--line);font-family:'Geist Mono',monospace;
+    font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:7px}
+  .calcard .cfoot .csync{color:var(--green)}
+
   /* footer cta */
   footer{border-top:1px solid var(--line);padding:50px 0 70px;text-align:center}
   footer h2{font-family:'Geist',sans-serif;font-size:clamp(26px,4vw,40px);font-weight:600;letter-spacing:-.02em}
@@ -242,6 +265,27 @@
         <div class="lbl" id="outlbl">Outcome · Booked</div>
         <div class="ostats" id="ostats"></div>
       </div>
+      <div class="calcard" id="calcard">
+        <div class="chead">
+          <span class="cdot"></span>
+          <span class="ctitle">Added to calendar</span>
+          <span class="cical">📅</span>
+        </div>
+        <div class="cbody">
+          <div class="cdate">
+            <span class="cmon" id="calMon">—</span>
+            <span class="cday" id="calDay">—</span>
+            <span class="cdow" id="calDow">—</span>
+          </div>
+          <div class="cdetail">
+            <div class="cjob" id="calJob">—</div>
+            <div class="crow"><span class="ci">🕐</span><span id="calTime">—</span></div>
+            <div class="crow"><span class="ci">📍</span><span id="calAddr">—</span></div>
+            <div class="crow"><span class="ci">👤</span><span id="calName">—</span></div>
+          </div>
+        </div>
+        <div class="cfoot"><span class="csync">●</span> <span id="calFoot">Synced to owner's calendar</span></div>
+      </div>
     </div>
 
   </div>
@@ -271,6 +315,7 @@ const noteEl = document.getElementById('note');
 const outcomeEl = document.getElementById('outcome');
 const outlblEl = document.getElementById('outlbl');
 const ostatsEl = document.getElementById('ostats');
+const calcardEl = document.getElementById('calcard');
 
 function B(){return biz.value.trim()||'your business'}
 function O(){return owner.value.trim()||'the owner'}
@@ -358,7 +403,8 @@ function hvacScripts(b, o){
       {who:'me',t:`Tomorrow 11 is good`},
       {who:'bot',t:`Booked — tomorrow 11am, 9234 Tyler Ave. ${o} will see you then. Is this the best number to reach you?`},
     ],note:{ttl:'What just happened',html:`The bot <b>required the address before offering a single time slot</b> — no half-baked bookings. It put a real job on ${o}'s calendar and logged Jenny as a lead, all while ${o} was on another roof.`},
-    out:{lbl:'Outcome · Booked',stats:[['$475','Avg ticket booked'],['4 min',`${o}'s time spent`],['0','Receptionist payroll']]}},
+    out:{lbl:'Outcome · Booked',stats:[['$475','Avg ticket booked'],['4 min',`${o}'s time spent`],['0','Receptionist payroll']]},
+    booking:{mon:'JUN',day:'10',dow:'Wed',time:'11:00 AM',job:'AC service — not cooling',addr:'9234 Tyler Ave, El Monte',name:'Jenny'}},
 
     tuneup:{type:'normal',turns:[
       {who:'bot',t:`Hey, this is ${o} at ${b} — sorry I missed your call. How can we help?`},
@@ -371,7 +417,8 @@ function hvacScripts(b, o){
       {who:'me',t:`9am works`},
       {who:'bot',t:`Done — Friday 9am at 145 Live Oak. You're on the calendar. Is this your best number?`},
     ],note:{ttl:'What just happened',html:`A low-urgency job most owners never even hear about — captured and booked automatically. <b>This is the revenue that normally leaks to voicemail.</b>`},
-    out:{lbl:'Outcome · Booked',stats:[['$189','Tune-up booked'],['Seasonal','Repeat customer'],['0','Receptionist payroll']]}},
+    out:{lbl:'Outcome · Booked',stats:[['$189','Tune-up booked'],['Seasonal','Repeat customer'],['0','Receptionist payroll']]},
+    booking:{mon:'JUN',day:'12',dow:'Fri',time:'9:00 AM',job:'AC tune-up',addr:'145 Live Oak, Arcadia',name:'Dave'}},
 
     quote:{type:'normal',turns:[
       {who:'bot',t:`Hey, this is ${o} at ${b} — sorry I missed your call. What can we help with?`},
@@ -384,7 +431,8 @@ function hvacScripts(b, o){
       {who:'me',t:`3pm`},
       {who:'bot',t:`Set — Wednesday 3pm at 88 Walnut Grove for the estimate. Best number to confirm?`},
     ],note:{ttl:'What just happened',html:`A replacement quote is a <b>high-ticket lead</b> — exactly the kind you can't afford to miss. The bot booked the estimate instead of letting Maria call the next company on Google.`},
-    out:{lbl:'Outcome · Estimate Booked',stats:[['$6k–12k','Potential job'],['Captured','vs. lost to voicemail'],['0','Receptionist payroll']]}},
+    out:{lbl:'Outcome · Estimate Booked',stats:[['$6k–12k','Potential job'],['Captured','vs. lost to voicemail'],['0','Receptionist payroll']]},
+    booking:{mon:'JUN',day:'17',dow:'Wed',time:'3:00 PM',job:'New unit — on-site estimate',addr:'88 Walnut Grove, San Gabriel',name:'Maria'}},
 
     died:{type:'emerg',turns:[
       {who:'bot',t:`Hey, this is ${o} at ${b} — sorry I missed your call. What's going on?`},
@@ -439,7 +487,8 @@ function hvacScripts(b, o){
       {who:'me',t:`9234 Tyler Ave, El Monte`},
       {who:'bot',t:`Perfect. I've got tomorrow 11am or Thursday 2pm. Which works?`},
     ],note:{ttl:'★ This part is customizable to YOU',html:`That $89 / waived-if-booked answer is a <b>placeholder</b>. On your build we set it to your real policy: <b>free estimates? flat diagnostic fee? service call waived on repair?</b> The bot holds the line on job quotes (protecting your margin) but answers the basic fee question so you don't lose the booking to silence.`},
-    out:{lbl:'Outcome · Objection Handled → Booking',stats:[['Held','No blind quotes'],['Answered','Fee policy'],['Saved','The booking']]}},
+    out:{lbl:'Outcome · Objection Handled → Booking',stats:[['Held','No blind quotes'],['Answered','Fee policy'],['Saved','The booking']]},
+    booking:{mon:'JUN',day:'10',dow:'Wed',time:'11:00 AM',job:'Service call — $89 fee, waived if booked',addr:'9234 Tyler Ave, El Monte',name:'Caller'}},
   };
 }
 
@@ -456,7 +505,8 @@ function landscapingScripts(b, o){
       {who:'me',t:`Friday 2pm is good`},
       {who:'bot',t:`Booked — Friday 2pm at 1424 Oak St for the walkthrough. ${o} will see you then. Is this the best number to reach you?`},
     ],note:{ttl:'What just happened',html:`The bot <b>required the address before offering a single time slot</b> — no half-baked bookings. It put a recurring-revenue lead on ${o}'s calendar, all while ${o} was running a mower.`},
-    out:{lbl:'Outcome · Booked',stats:[['Recurring','Weekly contract'],['4 min',`${o}'s time spent`],['0','Receptionist payroll']]}},
+    out:{lbl:'Outcome · Booked',stats:[['Recurring','Weekly contract'],['4 min',`${o}'s time spent`],['0','Receptionist payroll']]},
+    booking:{mon:'JUN',day:'12',dow:'Fri',time:'2:00 PM',job:'Walkthrough — weekly maintenance',addr:'1424 Oak St, Azusa',name:'Jenny'}},
 
     cleanup:{type:'normal',turns:[
       {who:'bot',t:`Hey, this is ${o} at ${b} — sorry I missed your call. What can we help with?`},
@@ -469,7 +519,8 @@ function landscapingScripts(b, o){
       {who:'me',t:`10am works`},
       {who:'bot',t:`Set — Wednesday 10am at 145 Live Oak. You're on the calendar. Best number to confirm?`},
     ],note:{ttl:'What just happened',html:`A one-off cleanup is often the <b>foot in the door for a recurring client</b>. The bot booked the estimate instead of letting Dave call the next crew on Google.`},
-    out:{lbl:'Outcome · Estimate Booked',stats:[['$300–800','Cleanup job'],['Captured','vs. lost to voicemail'],['0','Receptionist payroll']]}},
+    out:{lbl:'Outcome · Estimate Booked',stats:[['$300–800','Cleanup job'],['Captured','vs. lost to voicemail'],['0','Receptionist payroll']]},
+    booking:{mon:'JUN',day:'17',dow:'Wed',time:'10:00 AM',job:'Walkthrough — yard cleanup quote',addr:'145 Live Oak, Arcadia',name:'Dave'}},
 
     install:{type:'normal',turns:[
       {who:'bot',t:`Hey, this is ${o} at ${b} — sorry I missed your call. What are you looking to get done?`},
@@ -482,7 +533,8 @@ function landscapingScripts(b, o){
       {who:'me',t:`Thursday 1pm`},
       {who:'bot',t:`Set — Thursday 1pm at 88 Walnut Grove for the estimate. Best number to confirm?`},
     ],note:{ttl:'What just happened',html:`Sod + irrigation is a <b>high-ticket install</b> — exactly the kind you can't afford to miss. The bot booked the estimate instead of letting Maria shop it around.`},
-    out:{lbl:'Outcome · Estimate Booked',stats:[['$3k–10k','Potential job'],['Captured','vs. lost to voicemail'],['0','Receptionist payroll']]}},
+    out:{lbl:'Outcome · Estimate Booked',stats:[['$3k–10k','Potential job'],['Captured','vs. lost to voicemail'],['0','Receptionist payroll']]},
+    booking:{mon:'JUN',day:'11',dow:'Thu',time:'1:00 PM',job:'On-site estimate — sod + sprinklers',addr:'88 Walnut Grove, San Gabriel',name:'Maria'}},
 
     tree:{type:'emerg',turns:[
       {who:'bot',t:`Hey, this is ${o} at ${b} — sorry I missed your call. What's going on?`},
@@ -526,7 +578,8 @@ function landscapingScripts(b, o){
       {who:'me',t:`9234 Tyler Ave, El Monte`},
       {who:'bot',t:`Perfect. I've got tomorrow 11am or Thursday 2pm. Which works?`},
     ],note:{ttl:'★ This part is customizable to YOU',html:`That "free estimates, no obligation" answer is a <b>placeholder</b>. On your build we set it to your real policy: <b>free estimates? minimum job size? flat trip fee?</b> The bot holds the line on job quotes (protecting your margin) but answers the basic question so you don't lose the booking to silence.`},
-    out:{lbl:'Outcome · Objection Handled → Booking',stats:[['Held','No blind quotes'],['Answered','Fee policy'],['Saved','The booking']]}},
+    out:{lbl:'Outcome · Objection Handled → Booking',stats:[['Held','No blind quotes'],['Answered','Fee policy'],['Saved','The booking']]},
+    booking:{mon:'JUN',day:'10',dow:'Wed',time:'11:00 AM',job:'Walkthrough — free estimate',addr:'9234 Tyler Ave, El Monte',name:'Caller'}},
   };
 }
 
@@ -552,6 +605,7 @@ function resetConv(){
   msgsEl.innerHTML='';
   noteEl.classList.remove('show');noteEl.innerHTML='';
   outcomeEl.classList.remove('show','emerg');
+  calcardEl.classList.remove('show');
   const e=document.createElement('div');e.className='empty';e.id='empty';
   e.innerHTML='<div class="big">👈</div><p>Tap a scenario to start the text conversation.</p>';
   msgsEl.appendChild(e);
@@ -591,6 +645,19 @@ function run(key){
     if(data.type==='emerg')outcomeEl.classList.add('emerg');
     ostatsEl.innerHTML=data.out.stats.map(s=>`<div class="ostat"><div class="v">${s[0]}</div><div class="k">${s[1]}</div></div>`).join('');
     outcomeEl.classList.add('show');
+    // calendar card — only for scenarios that actually booked
+    if(data.booking){
+      const k=data.booking;
+      document.getElementById('calMon').textContent = k.mon;
+      document.getElementById('calDay').textContent = k.day;
+      document.getElementById('calDow').textContent = k.dow;
+      document.getElementById('calJob').textContent = k.job;
+      document.getElementById('calTime').textContent = k.time;
+      document.getElementById('calAddr').textContent = k.addr;
+      document.getElementById('calName').textContent = k.name;
+      document.getElementById('calFoot').textContent = 'Synced to '+O()+"'s calendar";
+      calcardEl.classList.add('show');
+    }
     msgsEl.scrollTop=msgsEl.scrollHeight;
   },delay+250));
 }
