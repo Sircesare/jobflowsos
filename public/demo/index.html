@@ -158,27 +158,29 @@
   .ostat .k{font-size:11px;color:var(--faint);margin-top:1px}
 
   /* booked calendar card */
-  .calcard{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;
-    display:none;animation:pop .4s ease}
-  .calcard.show{display:block}
-  .calcard .chead{display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,#16202c,#0f1620);
-    padding:11px 16px;border-bottom:1px solid var(--line)}
-  .calcard .chead .cdot{width:8px;height:8px;border-radius:50%;background:var(--green)}
-  .calcard .chead .ctitle{font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
-  .calcard .chead .cical{margin-left:auto;font-size:15px;opacity:.7}
+  .calcard{margin-top:16px;background:var(--panel);border:1.5px solid var(--gold);border-radius:16px;overflow:hidden;
+    display:none;box-shadow:0 0 0 1px rgba(214,168,79,.18), 0 18px 50px -12px rgba(214,168,79,.28)}
+  .calcard.show{display:block;animation:calpop .5s cubic-bezier(.2,.9,.25,1.1)}
+  @keyframes calpop{0%{opacity:0;transform:translateY(14px) scale(.94)}60%{transform:translateY(0) scale(1.015)}100%{opacity:1;transform:none}}
+  .calcard .chead{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#1d2433,#14110a);
+    padding:14px 18px;border-bottom:1px solid var(--gold)}
+  .calcard .chead .cdot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
+  .calcard .chead .ctitle{font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft);font-weight:600}
+  .calcard .chead .cical{margin-left:auto;font-size:19px;opacity:.85}
   .calcard .cbody{display:flex;align-items:stretch;gap:0}
-  .calcard .cdate{flex:0 0 78px;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding:16px 8px;border-right:1px solid var(--line);background:var(--bg2)}
-  .calcard .cdate .cmon{font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-soft)}
-  .calcard .cdate .cday{font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:600;color:var(--ink);line-height:1}
-  .calcard .cdate .cdow{font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:2px}
-  .calcard .cdetail{flex:1;padding:14px 16px}
-  .calcard .cdetail .cjob{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:8px}
-  .calcard .crow{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink2);margin-top:4px}
-  .calcard .crow .ci{width:15px;text-align:center;opacity:.75;font-size:13px}
-  .calcard .cfoot{padding:9px 16px;border-top:1px solid var(--line);font-family:'Geist Mono',monospace;
-    font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:7px}
-  .calcard .cfoot .csync{color:var(--green)}
+  .calcard .cdate{flex:0 0 102px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:20px 10px;border-right:1px solid var(--line);background:linear-gradient(180deg,#0d1322,var(--bg2))}
+  .calcard .cdate .cmon{font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-soft)}
+  .calcard .cdate .cday{font-family:'Barlow Condensed',sans-serif;font-size:56px;font-weight:700;color:var(--ink);line-height:.95}
+  .calcard .cdate .cdow{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-top:4px}
+  .calcard .cdetail{flex:1;padding:18px 18px}
+  .calcard .cdetail .cjob{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:11px;line-height:1.25}
+  .calcard .crow{display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--ink2);margin-top:7px}
+  .calcard .crow .ci{width:17px;text-align:center;opacity:.8;font-size:14px}
+  .calcard .cfoot{padding:11px 18px;border-top:1px solid var(--line);font-family:'Geist Mono',monospace;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);display:flex;align-items:center;gap:8px}
+  .calcard .cfoot .csync{color:var(--green);font-size:13px}
+
 
   /* footer cta */
   footer{border-top:1px solid var(--line);padding:50px 0 70px;text-align:center}
@@ -657,6 +659,10 @@ function run(key){
       document.getElementById('calName').textContent = k.name;
       document.getElementById('calFoot').textContent = 'Synced to '+O()+"'s calendar";
       calcardEl.classList.add('show');
+      // pull the screen to the booking — this is the payoff moment
+      timers.push(setTimeout(()=>{
+        calcardEl.scrollIntoView({behavior:'smooth',block:'center'});
+      },180));
     }
     msgsEl.scrollTop=msgsEl.scrollHeight;
   },delay+250));
